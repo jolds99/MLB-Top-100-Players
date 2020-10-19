@@ -1509,3 +1509,129 @@ write_csv(full_data, "FullDataUpdated.csv")
   # Saving data
   write_csv(full_data, "FullDataTrimmed.csv")
   
+  file.rename("FullData.csv", "InitialData.csv")
+  file.rename("FullDataUpdated.csv", "InitialDataUpdated.csv")
+  file.rename("FullDataBeforeTrim.csv", "InitialDataBeforeTrim.csv")  
+  file.rename("FullDataTrimmed.csv", "FullData.csv")
+  
+  ## FIXING ISSUES Found during data exploration
+  # Issue with incorrect team/league names
+  which(full_data$Tm == "TOT")
+  full_data[3890,5] = "OAK"
+  full_data[3890,6] = "AL"
+  
+  which(full_data$Tm == "2TM")
+  full_data[606,5] = "SEA"
+  full_data[606,6] = "AL"
+  
+  full_data[813,5] = "OAK"
+  full_data[813,6] = "AL"
+  
+  full_data[2446,5] = "MIN"
+  full_data[2446,6] = "AL"
+  
+  full_data[2833,5] = "OAK"
+  full_data[2833,6] = "AL"
+  
+  full_data[3652,5] = "SEA"
+  full_data[3652,6] = "AL"
+  
+  full_data[4231,5] = "TEX"
+  full_data[4231,6] = "AL"
+  
+  full_data[4663,5] = "NYY"
+  full_data[4663,6] = "AL"
+  
+  full_data[4868,5] = "KCR"
+  full_data[4868,6] = "AL"
+  
+  full_data[5391,5] = "SEA"
+  full_data[5391,6] = "AL"
+  
+  full_data[5572,5] = "SEA"
+  full_data[5572,6] = "AL"
+  
+  full_data[6082,5] = "DET"
+  full_data[6082,6] = "AL"
+  
+  full_data[6181,5] = "BAL"
+  full_data[6181,6] = "AL"
+  
+  full_data[7216,5] = "TBR"
+  full_data[7216,6] = "AL"
+  
+  full_data[7410,5] = "OAK"
+  full_data[7410,6] = "AL"
+  
+  full_data[7633,5] = "BAL"
+  full_data[7633,6] = "AL"
+  
+  # Duplicate Rows
+  which(is.na(full_data$Tm))
+  full_data = full_data[-c(2906,2909),]
+  full_data = full_data[-c(6008),]
+  
+  # Incorrect playerid
+  full_data %>% count(playerid, Season) %>% filter(n > 1)
+  full_data[which(full_data$Name == "Ramon Ramirez"),]
+  full_data[6675,3] = 7986
+
+  # Changing league name of Florida Marlins to NL
+  full_data[which(full_data$Lg == "MLB"),6] = "NL"
+  
+  # Adding Top 100 Rank Variable, not separate from year
+  full_data$Top100Rank = ifelse(full_data$Top100Rank_2011 != 0, full_data$Top100Rank_2011,     
+                           ifelse(full_data$Top100Rank_2012 != 0, full_data$Top100Rank_2012,
+                              ifelse(full_data$Top100Rank_2013 != 0, full_data$Top100Rank_2013,
+                                  ifelse(full_data$Top100Rank_2014 != 0, full_data$Top100Rank_2014,
+                                      ifelse(full_data$Top100Rank_2015 != 0, full_data$Top100Rank_2015,
+                                          ifelse(full_data$Top100Rank_2016 != 0, full_data$Top100Rank_2016,
+                                              ifelse(full_data$Top100Rank_2017 != 0, full_data$Top100Rank_2017,
+                                                  ifelse(full_data$Top100Rank_2018 != 0, full_data$Top100Rank_2018,
+                                                      ifelse(full_data$Top100Rank_2019 != 0, full_data$Top100Rank_2019,
+                                                          ifelse(full_data$Top100Rank_2020 != 0, full_data$Top100Rank_2020,0))))))))))
+  
+  
+  # Removing secondary positions from position
+  full_data$PosSummary_Field = gsub("-.*","",full_data$PosSummary_Field)
+  
+  # Fixing rows with no position
+  which(full_data$PosSummary_Field == 0)
+  full_data[179,141] = "P"
+  full_data[2268,141] = "DH"
+  full_data[3241,141] = "OF"
+  full_data[3474,141] = "OF"
+  full_data[3871,141] = "2B"
+  full_data[4103,141] = "DH"
+  full_data[4104,141] = "DH"
+  full_data[4105,141] = "DH"
+  full_data[4888,141] = "DH"
+  full_data[4981,141] = "DH"
+  full_data[5614,141] = "DH"
+  full_data[5765,141] = "P"
+  full_data[6280,141] = "DH"
+  full_data[7390,141] = "P"
+  full_data[7392,141] = "P"
+  full_data[7702,141] = "DH"
+  full_data[7703,141] = "DH"
+  full_data[7704,141] = "DH"
+  full_data[7705,141] = "DH"
+  full_data[7706,141] = "DH"
+  full_data[7921,141] = "DH"
+  full_data[7926,141] = "DH"
+  full_data[7950,141] = "DH"
+  
+  # Making NA's 0 in Top100Rank
+  full_data[, 334][full_data[, 334] == 0] <- NA
+  
+  # Creating dataset where batters and pitchers are separate
+  batters = full_data[which(full_data$PosSummary_Field != "P"),]
+  pitchers = full_data[which(full_data$PosSummary_Field == "P"),]
+  
+  length(which(batters$Top100 == 1))
+  length(which(pitchers$Top100 == 1))
+  
+  # Resaving full data
+  write_csv(full_data,"FullData.csv")
+  
+  
