@@ -1,0 +1,54 @@
+---
+title: "Modeling Ideas"
+author: "Jonathan Olds"
+date: "10/19/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Four Categories
+
+1. Traditional Only
+Includes Traditional Variables with No Advanced 'Look-Alike'
+
+* Hits
+* Walks
+* Strikeouts
+* Total Bases
+
+2. Traditional Comparison
+Includes Traditional Variables with Advanced 'Look-Alike'
+
+* Batting Average
+* OPS
+* Home Runs
+* RBI
+* OBP
+* Runs
+
+3. Advanced Comparison
+Includes Advanced Variables with Traditional 'Look-Alike'
+
+* BABIP
+* OPS
+* ISO
+* wRC
+* wOBA
+* wRAA
+
+4. Advanced Only
+Includes Advanced Variables with no Traditional 'Look-Alike'
+
+* Clutch
+* OWn%
+* RE24
+  
+  
+  
+  
+  
+  
+  
