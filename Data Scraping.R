@@ -5,8 +5,8 @@
   library(plyr)
   library(dplyr)
   # Use if dplyr doesn't work
-    # detach(package:plyr)
-    # detach(package:dplyr)
+  detach(package:plyr)
+  detach(package:dplyr)
     
 
 ## Creating Vector of Years for Data Scraping
@@ -1056,10 +1056,11 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
   full_data = full_data1
   
 ## Saving full data Without Three Year Averages
-write_csv(full_data, "FullDataUpdated.csv")
+write_csv(full_data, "InitialDataUpdated.csv")
   
   ## load data if needed
-  ## full_data = read_csv("FullDataUpdated.csv")
+
+full_data = read_csv("InitialDataUpdated.csv")
   
 ## Removing Unnecessary Columns
   full_data = full_data[,-c(8,24:26,63,65,68,83,93,105,151,153,158)]
@@ -1080,9 +1081,10 @@ write_csv(full_data, "FullDataUpdated.csv")
              lag2=lag({{variable}}, 2)) %>% # create variable with value from two years prior
       ungroup() %>%
       rowwise(playerid, Season) %>%
-      mutate("{{variable}}_3yravg" := round(mean(c({{variable}}, lag1, lag2), na.rm = TRUE),3)) # create rolling average of past three years %>%
+      mutate("{{variable}}_3yravg" := round(mean(c({{variable}}, lag1, lag2), na.rm = TRUE),3)) %>% # create rolling average of past three years 
       select(-c(lag1,lag2)) # remove variables with prior values
   }
+  
   # Function to compute rolling three year total
   add_3yrtotal = function(.data, variable){
     .data %>% group_by(playerid) %>%
@@ -1090,14 +1092,14 @@ write_csv(full_data, "FullDataUpdated.csv")
              lag2=lag({{variable}}, 2)) %>% # create variable with value from two years prior
       ungroup() %>%
       rowwise(playerid, Season) %>%
-      mutate("{{variable}}_3yrtotal" := round(sum(c({{variable}}, lag1, lag2), na.rm = TRUE),3)) # create rolling sum of past three years %>%
+      mutate("{{variable}}_3yrtotal" := round(sum(c({{variable}}, lag1, lag2), na.rm = TRUE),3)) %>% # create rolling sum of past three years
       select(-c(lag1,lag2)) # remove variables with prior values
   }
   
   # Function to compute overall total
   add_total = function(.data, variable){
     .data %>% group_by(playerid) %>%
-      mutate("{{variable}}_total" := round(cumsum(ifelse(is.na({{variable}}),0,{{variable}})),3)) # cumulative sum of values%>% 
+      mutate("{{variable}}_total" := round(cumsum(ifelse(is.na({{variable}}),0,{{variable}})),3)) %>% # cumulative sum of values 
       ungroup() %>%
       rowwise(playerid, Season) 
   }
@@ -1106,6 +1108,13 @@ write_csv(full_data, "FullDataUpdated.csv")
   for(i in 1:ncol(full_data)){
     colnames(full_data)[i] = gsub("\\s", "", colnames(full_data)[i])
   }
+  
+  full_data <- mutate_if(full_data, 
+                 is.character, 
+                 str_replace_all, pattern = "%", replacement = "")
+ 
+  full_data[,c(23:34,94:100)] = lapply(full_data[,c(23:34,94:100)], as.numeric)
+  full_data[,c(148,153,158)] = lapply(full_data[,c(148,153,158)], as.numeric)
   
   # Applying functions as necessary to each column
   fulldatatest = full_data %>%
@@ -1260,6 +1269,8 @@ write_csv(full_data, "FullDataUpdated.csv")
     add_3yraverage(ROY1stPlace) %>%
     add_3yraverage(ROYShare) %>%
     add_total(ROY_Q)
+  
+  
   
     # Renaming to apply changes
     full_data = fulldatatest
@@ -1442,9 +1453,9 @@ write_csv(full_data, "FullDataUpdated.csv")
   write.csv(full_data, "FullDataBeforeTrim.csv")
   
   # Reload data if necessary 
-  # full_data = read_csv("FullDataBeforeTrim.csv")
-  # full_data = full_data[,-1]
-  
+   #  = read_csv("InitialDataBeforeTrim.csv")
+   # full_data = full_data[,-1]
+
   # Replacing NA values with 0
   full_data = full_data %>% mutate_at(c(7:139,141:330), ~replace(., is.na(.), 0))
   
@@ -1457,7 +1468,7 @@ write_csv(full_data, "FullDataUpdated.csv")
         ungroup() %>%
         rowwise(playerid, Season) %>%
         mutate("{{variable}}_3yr251avgcheck" := case_when(mean(c({{variable}},lag1,lag2), na.rm = TRUE) >= 251 ~ 1, 
-                                                       mean(c({{variable}},lag1,lag2), na.rm = TRUE) < 251 ~ 0)) # Giving value of 1 if average greater than 251, 0 if not %>%
+                                                       mean(c({{variable}},lag1,lag2), na.rm = TRUE) < 251 ~ 0)) %>% # Giving value of 1 if average greater than 251, 0 if not 
       select(-c(lag1,lag2))
     }
   
@@ -1476,7 +1487,7 @@ write_csv(full_data, "FullDataUpdated.csv")
       ungroup() %>%
       rowwise(playerid, Season) %>%
       mutate("{{variable}}_3yr41avgcheck" := case_when(mean(c({{variable}},lag1,lag2), na.rm = TRUE) >= 41 ~ 1, 
-                                                    mean(c({{variable}},lag1,lag2), na.rm = TRUE) < 41 ~ 0)) # giving value of 1 if average is greater than 41, 0 if not %>% 
+                                                    mean(c({{variable}},lag1,lag2), na.rm = TRUE) < 41 ~ 0)) %>% # giving value of 1 if average is greater than 41, 0 if not 
     select(-c(lag1,lag2))
     }
 
@@ -1509,13 +1520,16 @@ write_csv(full_data, "FullDataUpdated.csv")
   # Saving data
   write_csv(full_data, "FullDataTrimmed.csv")
   
+  
   file.rename("FullData.csv", "InitialData.csv")
   file.rename("FullDataUpdated.csv", "InitialDataUpdated.csv")
   file.rename("FullDataBeforeTrim.csv", "InitialDataBeforeTrim.csv")  
   file.rename("FullDataTrimmed.csv", "FullData.csv")
-  
+ 
   ## FIXING ISSUES Found during data exploration
   # Issue with incorrect team/league names
+ 
+  full_data = read_csv("FullData.csv")
   which(full_data$Tm == "TOT")
   full_data[3890,5] = "OAK"
   full_data[3890,6] = "AL"
@@ -1630,6 +1644,15 @@ write_csv(full_data, "FullDataUpdated.csv")
   
   length(which(batters$Top100 == 1))
   length(which(pitchers$Top100 == 1))
+  
+  colnames(full_data) = gsub("%","Percent", colnames(full_data))
+  colnames(full_data) = gsub("2B", "Doubles", colnames(full_data))
+  colnames(full_data) = gsub("3B", "Triples", colnames(full_data))
+  colnames(full_data) = gsub("\\+", "Plus", colnames(full_data))
+  colnames(full_data) = gsub("\\+", "Plus", colnames(full_data))
+  colnames(full_data) = gsub("/", "Per", colnames(full_data))
+  colnames(full_data) = gsub("162", "FullSeason", colnames(full_data))
+  colnames(full_data) = gsub("\\-", "inLossPercent", colnames(full_data))
   
   # Resaving full data
   write_csv(full_data,"FullData.csv")
