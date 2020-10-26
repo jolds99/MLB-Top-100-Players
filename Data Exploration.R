@@ -1,6 +1,6 @@
 ## Loading Data
 full_data = read_csv("FullData.csv")
-
+library(ggplot2)
 ## Creating Team Color Vector
 team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20", "#C6011F",
                 "#E31937", "#333366", "#0C2C56", "#41748D", "#F4871E", "#004687", "#8F0028", 
@@ -122,5 +122,60 @@ team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20"
     theme(plot.title = element_text(hjust = 0.5)) 
 
 
+  
+  ## Density Plots
+  ggplot(batters, aes(x = `2B_3yravg`, fill = as.factor(Top100))) + 
+    geom_density(alpha = 0.5) + 
+    scale_fill_manual(values = c("#D50032", "#002D72")) + 
+    labs(fill = "Top 100") + 
+    xlab("3 Year Avg. of BA")
+  
+  plot_data_nonawards = function(data, column) {
+    ggplot(data, aes_string(x = column, fill = as.factor(data$Top100))) +
+      geom_density(alpha = 0.5) + 
+      scale_fill_manual(values = c("#D50032", "#002D72")) + 
+      labs(fill = "Top 100") + 
+      xlab(paste("3 Year Avg. of", sub("_.*", "", column)))
+  }
+
+  battingplots_nonawards = lapply(colnames(full_data)[c(160:217)], plot_data_nonawards, data = batters)
+  pitchingplots_nonawards = lapply(colnames(full_data)[218:274], plot_data_nonawards, data = pitchers)
+
+    
+  plot_data_awards = function(data, column) {
+    ggplot(data, aes_string(x = column, fill = as.factor(data$Top100))) +
+      geom_density(alpha = 0.5) + 
+      scale_fill_manual(values = c("#D50032", "#002D72")) + 
+      labs(fill = "Top 100") + 
+      xlab(paste("Total", sub("_.*", "", column)))
+  }
+  
+  battingplots_awards = lapply(colnames(full_data)[c(293:295,300,310)], plot_data_awards, data = batters)
+  pitchingplots_awards = lapply(colnames(full_data)[c(293:295,300,305,310)], plot_data_awards, data = pitchers)
+ 
+  
+  battingplots = append(battingplots_nonawards, battingplots_awards)
+  pitchingplots = append(pitchingplots_nonawards, pitchingplots_awards)
+
+  battingplots[20]
+  
+  
+  library(gridExtra)
+  
+  pdf("battingplots.pdf")
+  for (i in seq(length(list(battingplots)))) {
+    print(list(battingplots)[[i]])
+  }
+  dev.off()
+  
+  pdf("pitchingplots.pdf")
+  for (i in seq(length(list(pitchingplots)))) {
+    print(list(pitchingplots)[[i]])
+  }
+  dev.off()
+  
+
+  prcomp() 
+  
 
   
