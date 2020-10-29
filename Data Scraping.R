@@ -201,7 +201,7 @@
   
   # Creating full batting data set with function
   full_batting_data = merge_batting_datasets_function(full_batting_data)
- 
+  
 ## Cleaning up Dataset
   for(i in 1:12){
      # Remove LgAvg Row
@@ -323,6 +323,11 @@
 fangraphs_batting_data = read_csv("Fangraphs Data/FanGraphs Batting Stats Leaderboard.csv")
 fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Leaderboard.csv")
 
+which(colnames(full_batting_data) == "WAR")
+colnames(full_batting_data)[37] = "Br_WAR"
+
+which(colnames(full_pitching_data) == "WAR")
+colnames(full_pitching_data)[38] = "Br_WAR"
  
 ## Merging Full Batting with Fangraphs Batting
   # Creating function to find distance between strings for differences in names
@@ -454,52 +459,53 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
     full_batting_data[15857,c(1,6,40)] = fangraphs_batting_data[12809,c(2,3,1)] # adding data from extra row to full data
 
   # Merging Datasets
+    
     # calling merged data set 'new' to test for merging accuracy, merging by name and plate appearances
   new = join(full_batting_data, fangraphs_batting_data, by = c("Name", "PA"), type = "full", match = "first")
   
   # Transferring a 'Beau Taylor' row to correct location
   which(new$Name == "Beau Taylor" & new$Season == 2019)
-  new[1293,41:76] = new[15858,41:76]
+  new[1293,41:77] = new[15858,41:77]
   
   # Transferring a 'Cody Bellinger' row to correct location
   which(new$Name == "Cody Bellinger" & new$Season == 2019)
-  new[3509,41:76] = new[15859,41:76]
+  new[3509,41:77] = new[15859,41:77]
   
   # Transferring a 'Cody Ransom' row to correct location 
   which(new$Name == "Cody Ransom" & new$Season == 2012)
-  new[3526,41:76] = new[15860,41:76]
+  new[3526,41:77] = new[15860,41:77]
   
   # Transferring a 'Dee Strange-Gordon' row to correct location
   which(new$Name == "Dee Strange-Gordon" & new$Season == 2016)
-  new[4447,41:76] = new[15861,41:76]
+  new[4447,41:77] = new[15861,41:77]
   
   # Transferring a 'Devon Travis' row to correct location
   which(new$Name == "Devon Travis" & new$Season == 2015)
-  new[4583,41:76] = new[15862,41:76]
+  new[4583,41:77] = new[15862,41:77]
   
   # Transferring a 'Erick Aybar' row to correct location
   which(new$Name == "Erick Aybar" & new$Season == 2014)
-  new[5339,41:76] = new[15863,41:76]
+  new[5339,41:77] = new[15863,41:77]
   
   # Transferring a 'Jon Jay' row to correct location
   which(new$Name == "Jon Jay" & new$Season == 2016)
-  new[8311,41:76] = new[15864,41:76]
+  new[8311,41:77] = new[15864,41:77]
   
   # Transferring a 'Lyle Overbay' row to correct location
   which(new$Name == "Lyle Overbay" & new$Season == 2013)
-  new[10279,41:76] = new[15865,41:76]
+  new[10279,41:77] = new[15865,41:77]
 
   # Transferring a 'Michael Crotta' row to correct location
   which(new$Name == "Michael Crotta" & new$Season == 2011)
-  new[11144,41:76] = new[15866,41:76]
+  new[11144,41:77] = new[15866,41:77]
   
   # Transferring a 'Mike Ryan' row to correct location
   which(new$Name == "Mike Ryan" & new$Season == 2010)
-  new[11576,41:76] = new[15867,41:76]
+  new[11576,41:77] = new[15867,41:77]
   
   # Transferring a 'Ronald Torreyes' row to correct location
   which(new$Name == "Ronald Torreyes" & new$Season == 2016)
-  new[13091,41:76] = new[15868,41:76]
+  new[13091,41:77] = new[15868,41:77]
   
   # Removing old, unecessary rows
   new = new[-(15858:15868),]
@@ -553,63 +559,63 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
 
     # Transferring a 'Andrew Vasquez' row to correct location
     which(new$Name == "Andrew Vasquez" & new$Season == 2019)
-    new[422,c(2,43:69)] = new[8508,c(2,43:69)]
+    new[422,c(2,43:70)] = new[8508,c(2,43:70)]
     
     # Transferring a 'Daniel McCutchen' row to correct location
     which(new$Name == "Daniel McCutchen" & new$Season == 2012)
-    new[2137,c(2,43:69)] = new[8509,c(2,43:69)]
+    new[2137,c(2,43:70)] = new[8509,c(2,43:70)]
     
     # Transferring a 'Dustin Moseley' row to correct location
     which(new$Name == "Dustin Moseley" & new$Season == 2010)
-    new[2594,43:69] = new[8510, 43:69]
+    new[2594,43:70] = new[8510, 43:70]
 
     # Transferring a 'Gerardo Parra' row to correct location
     which(new$Name == "Gerardo Parra" & new$Season == 2019)
-    new[3111,c(2,43:69)] = new[8511,c(2,43:69)]
+    new[3111,c(2,43:70)] = new[8511,c(2,43:70)]
     
     # Transferring a 'J.P. Howell' row to correct location
     which(new$Name == "J.P. Howell" & new$Season == 2013)
-    new[3465,43:69] = new[8512,43:69]
+    new[3465,43:70] = new[8512,43:70]
     
     # Transferring a 'Jeremy Bonderman' row to correct location
     which(new$Name == "Jeremy Bonderman" & new$Season == 2010)
-    new[4019,43:69] = new[8513,43:69]
+    new[4019,43:70] = new[8513,43:70]
     
     # Transferring a 'Jim Henderson' row to correct location
     which(new$Name == "Jim Henderson" & new$Season == 2016)
-    new[4155,43:69] = new[8514,43:69]
+    new[4155,43:70] = new[8514,43:70]
     
     # Transferring a 'Joel Zumaya' row to correct location
     which(new$Name == "Joel Zumaya" & new$Season == 2010)
-    new[4353,43:69] = new[8515,43:69]
+    new[4353,43:70] = new[8515,43:70]
     
     # Transferring a 'John Lackey' row to correct location
     which(new$Name == "John Lackey" & new$Season == 2010)
-    new[4411,43:69] = new[8516,43:69]
+    new[4411,43:70] = new[8516,43:70]
     
     # Transferring a 'Matt Koch' row to correct location
     which(new$Name == "Matt Koch" & new$Season == 2017)
-    new[5816,c(2,43:69)] = new[8517,c(2,43:69)]
+    new[5816,c(2,43:70)] = new[8517,c(2,43:70)]
     
     # Transferring a 'Nate Jones' row to correct location
     which(new$Name == "Nate Jones" & new$Season == 2014)
-    new[6223,c(2,43:69)] = new[8518,c(2,43:69)]
+    new[6223,c(2,43:70)] = new[8518,c(2,43:70)]
     
     # Transferring a 'Nick Greenwood' row to correct location
     which(new$Name == "Nick Greenwood" & new$Season == 2015)
-    new[6304,c(2,43:69)] = new[8519,c(2,43:69)]
+    new[6304,c(2,43:70)] = new[8519,c(2,43:70)]
     
     # Transferring a 'Rex Brothers' row to correct location
     which(new$Name == "Rex Brothers" & new$Season == 2018)
-    new[6727,c(2,43:69)] = new[8520,c(2,43:69)]
+    new[6727,c(2,43:70)] = new[8520,c(2,43:70)]
     
     # Transferring a 'Stephen Fife' row to correct location
     which(new$Name == "Stephen Fife" & new$Season == 2013)
-    new[7519,43:69] = new[8521,43:69]
+    new[7519,43:70] = new[8521,43:70]
     
     # Transferring a 'Zack Weiss' row to correct location
     which(new$Name == "Zack Weiss" & new$Season == 2018)
-    new[8499,c(2,43:69)] = new[8522,c(2,43:69)]
+    new[8499,c(2,43:70)] = new[8522,c(2,43:70)]
     
     # Getting rid of old, unecessary rows
     new = new[-(8508:15822),]
@@ -627,7 +633,7 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
     # Finding common columns
     target_batpitch = Reduce(intersect, list(colnames(full_batting_data), colnames(full_pitching_data)))
     target_batpitch
-    target_batpitch = target_batpitch[c(5:15,17:31)]
+    target_batpitch = target_batpitch[c(5:15,17:32)]
     # Renaming column names
     for(i in 1:length(target_batpitch)){
       colnames(full_batting_data)[which(names(full_batting_data) == target_batpitch[i])] = paste(target_batpitch[i],"_Bat", "")
@@ -635,8 +641,8 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
     }
   
   # Moving PA and ERA Columns 
-  full_batting_data = full_batting_data[, c(1,3:6,2,7:76)]
-  full_pitching_data = full_pitching_data[, c(1,3:8,2,9:69)]
+  full_batting_data = full_batting_data[, c(1,3:6,2,7:77)]
+  full_pitching_data = full_pitching_data[, c(1,3:8,2,9:70)]
   
   # Joining full batting and full pitching datasets
   full_data = join(full_batting_data, full_pitching_data, by = c("Name", "Age"), type = "full", match = "first")
@@ -645,12 +651,12 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
   which(full_data$Name == "Chris Carpenter" & is.na(full_data$Age)) # locating row
   which(full_data$Name == "Chris Carpenter") # locating all possible rows
   cc = rbind(full_data[3011,], full_data[15858,]) # finding which data to swap
-  full_data[3011,c(2:4,77:139)] = full_data[15858,c(2:4,77:139)] # swapping rows
+  full_data[3011,c(2:4,77:141)] = full_data[15858,c(2:4,77:141)] # swapping rows
   
   which(full_data$Name == "Rich Thompson" & is.na(full_data$Age)) # locating row
   which(full_data$Name == "Rich Thompson") # locating all possible rows
   rt = rbind(full_data[12810,], full_data[15859,]) # finding which data to swap
-  full_data[12810,c(2:4,77:139)] = full_data[15859,c(2:4,77:139)] # swapping rows
+  full_data[12810,c(2:4,77:141)] = full_data[15859,c(2:4,77:141)] # swapping rows
   
   full_data = full_data[-(15858:15859),] # removing unnecessary rows
   full_data = full_data[order(full_data$Name),] # reordering dataset
@@ -672,8 +678,8 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
     ## Joining full fielding with full data
     full_data1 = join(full_data, full_fielding_data, by = c("Name", "Age"), type = "full", match = "first")
       # Transferring unnecessary extra data from two rows
-      full_data1[7262,114:127] = full_data1[15858,114:127]
-      full_data1[7263,114:127] = full_data1[15859,114:127]
+      full_data1[7262,142:159] = full_data1[15858,142:159]
+      full_data1[7263,142:159] = full_data1[15859,142:159]
       full_data1 = full_data1[-c(15858,15859),]
       
       # Renaming to full dataset
@@ -740,21 +746,21 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
     
     # Getting rid of extra 'Chris Young' row
     length(which(allstarfull$Season == 2010)) # noticing extra row
-    full_data1[which(full_data1$Name == "Chris Young"),c(1,3,40,159)] # finding extra row
-    full_data1[3316,159] = NA # changing all star indicator for extra row to na
+    full_data1[which(full_data1$Name == "Chris Young"),c(1,3,40,161)] # finding extra row
+    full_data1[3316,161] = NA # changing all star indicator for extra row to na
   
     # Getting rid of 2 extra 'Jose Ramirez' Rows
     length(which(allstarfull$Season == 2017)) # noticing extra row
-    full_data1[which(full_data1$Name == "Jose Ramirez"),c(1,3,40,159)] # finding extra row
-    full_data1[8746,159] = NA # changing all star indicator for extra row to na
-    full_data1[8748,159] = NA # changing all star indicator for extra row to na
+    full_data1[which(full_data1$Name == "Jose Ramirez"),c(1,3,40,161)] # finding extra row
+    full_data1[8746,161] = NA # changing all star indicator for extra row to na
+    full_data1[8748,161] = NA # changing all star indicator for extra row to na
     
     # Getting rid of extra 'Will Smith' Row
     length(which(allstarfull$Season == 2019)) # noticing extra row
-    full_data1[which(full_data1$Name == "Will Smith"),c(1,3,40,159)] # finding extra row
-    full_data1[15389,159] = NA # changing all star indicator for extra row to na
+    full_data1[which(full_data1$Name == "Will Smith"),c(1,3,40,161)] # finding extra row
+    full_data1[15389,161] = NA # changing all star indicator for extra row to na
     
-    allstarfull = full_data1[which(full_data1$AllStar == 1), c(1,40,158)]
+    allstarfull = full_data1[which(full_data1$AllStar == 1), c(1,40,161)]
     
     # Renaming to apply changes
     full_data = full_data1
@@ -955,43 +961,43 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
   
   # Transferring a 'Yoenis Cespedes' row to correct location
   which(full_data1$Name == "Yoenis Cespedes" & full_data1$Season == 2015)
-  full_data1[15618,162:166] = full_data1[15858,162:166]
+  full_data1[15618,164:168] = full_data1[15858,164:168]
 
   # Transferring a 'Hunter Pence' row to correct location
   which(full_data1$Name == "Hunter Pence" & full_data1$Season == 2011)
-  full_data1[6382,162:166] = full_data1[15859,162:166]
+  full_data1[6382,164:168] = full_data1[15859,164:168]
   
   # Transferring a 'Justin Upton' row to correct location
   which(full_data1$Name == "Justin Upton" & full_data1$Season == 2017)
-  full_data1[9322,162:166] = full_data1[15860,162:166]
+  full_data1[9322,164:168] = full_data1[15860,164:168]
   
   # Transferring a 'Matt Holliday' row to correct location
   which(full_data1$Name == "Matt Holliday" & full_data1$Season == 2009)
-  full_data1[10823,162:166] = full_data1[15861,162:166]
+  full_data1[10823,164:168] = full_data1[15861,164:168]
 
   # Transferring a 'Carlos Beltran' row to correct location
   which(full_data1$Name == "Carlos Beltran" & full_data1$Season == 2011)
-  full_data1[2426,162:166] = full_data1[15862,162:166]
+  full_data1[2426,164:168] = full_data1[15862,164:168]
   
   # Transferring a 'Mark Teixeira' row to correct location
   which(full_data1$Name == "Mark Teixeira" & full_data1$Season == 2008)
-  full_data1[10545,162:166] = full_data1[15863,162:166]
+  full_data1[10545,164:168] = full_data1[15863,164:168]
   
   # Transferring a 'Victor Martinez' row to correct location
   which(full_data1$Name == "Victor Martinez" & full_data1$Season == 2009)
-  full_data1[15170,162:166] = full_data1[15864,162:166]
+  full_data1[15170,164:168] = full_data1[15864,164:168]
   
   # Transferring a 'Hunter Pence' row to correct location
   which(full_data1$Name == "Hunter Pence" & full_data1$Season == 2012)
-  full_data1[6383,162:166] = full_data1[15865,162:166]
+  full_data1[6383,164:168] = full_data1[15865,164:168]
   
   # Transferring a 'Manny Ramirez' row to correct location
   which(full_data1$Name == "Manny Ramirez" & full_data1$Season == 2008)
-  full_data1[10368,162:166] = full_data1[15866,162:166]
+  full_data1[10368,164:168] = full_data1[15866,164:168]
   
   # Transferring a 'David Price' row to correct location
   which(full_data1$Name == "David Price" & full_data1$Season == 2015)
-  full_data1[4381,162:166] = full_data1[15867,162:166]
+  full_data1[4381,164:168] = full_data1[15867,164:168]
   
   # Removing old, unecessary rows
   full_data1 = full_data1[-(15858:15867),]
@@ -1007,31 +1013,31 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
   
   # Transferring a 'David Price' row to correct location
   which(full_data1$Name == "David Price" & full_data1$Season == 2015)
-  full_data1[4381,167:171] = full_data1[15858,167:171]
+  full_data1[4381,169:173] = full_data1[15858,169:173]
   
   # Transferring a 'Jon Lester' row to correct location
   which(full_data1$Name == "Jon Lester" & full_data1$Season == 2014)
-  full_data1[8326,167:171] = full_data1[15859,167:171]
+  full_data1[8326,169:173] = full_data1[15859,169:173]
   
   # Transferring a 'Justin Verlander' row to correct location
   which(full_data1$Name == "Justin Verlander" & full_data1$Season == 2017)
-  full_data1[9334,167:171] = full_data1[15860,167:171]
+  full_data1[9334,169:173] = full_data1[15860,169:173]
   
   # Transferring a 'David Price' row to correct location
   which(full_data1$Name == "David Price" & full_data1$Season == 2014)
-  full_data1[4380,167:171] = full_data1[15861,167:171]
+  full_data1[4380,169:173] = full_data1[15861,169:173]
   
   # Transferring a 'Roy Oswalt' row to correct location
   which(full_data1$Name == "Roy Oswalt" & full_data1$Season == 2010)
-  full_data1[13172,167:171] = full_data1[15862,167:171]
+  full_data1[13172,169:173] = full_data1[15862,169:173]
   
   # Transferring a 'Cliff Lee' row to correct location
   which(full_data1$Name == "Cliff Lee" & full_data1$Season == 2010)
-  full_data1[3451,167:171] = full_data1[15863,167:171]
+  full_data1[3451,169:173] = full_data1[15863,169:173]
   
   # Transferring a 'Andrew Miller' row to correct location
   which(full_data1$Name == "Andrew Miller" & full_data1$Season == 2016)
-  full_data1[875,167:171] = full_data1[15864,167:171]
+  full_data1[875,169:173] = full_data1[15864,169:173]
   
   # Removing old, unecessary rows
   full_data1 = full_data1[-(15858:15864),]
@@ -1047,7 +1053,7 @@ fangraphs_pitching_data = read_csv("Fangraphs Data/FanGraphs Pitching Stats Lead
   
   # # Transferring a 'Jose Iglesias' row to correct location
   which(full_data1$Name == "Jose Iglesias" & full_data1$Season == 2013)
-  full_data1[8667,172:176] = full_data1[15858,172:176]
+  full_data1[8667,174:178] = full_data1[15858,174:178]
   
   # Removing old, unecessary row
   full_data1 = full_data1[-15858,]
@@ -1063,14 +1069,15 @@ write_csv(full_data, "InitialDataUpdated.csv")
 full_data = read_csv("InitialDataUpdated.csv")
   
 ## Removing Unnecessary Columns
-  full_data = full_data[,-c(8,24:26,63,65,68,83,93,105,151,153,158)]
+  full_data = full_data[,-c(8,24:26,63,65,68:69,84,94,106,153,155,160)]
+  
   
   ## Reorganizing Columns
-  full_data = full_data[,c(1,69,2:4,36,5:8,15:16,9:11,22,12,17:20,26,37:50,21,24:25,51:52,28:31,53,32:34,63:68,27,
+  full_data = full_data[,c(1,69,2:4,36,5:8,15:16,9:11,22,12,17:20,26,37:50,21,24:25,51:52,28:31,53,32:34,62:68,27,
                            58,60,13:14,54:57,70:72,74:78,86,110:112,79:82,73,89,83:85,108:109,90:95,107,104:106,
-                           116:118,119,87:88,120:121,98,96:97,99,102:103,101,100,122:129,130:139,143:144,140:142,
-                           35,59,61,23,145:163)]
-  
+                           116:118,119,87:88,120,122,121,98,96:97,99,102:103,101,100,123:140,144:145,141:143,
+                           35,59,61,23,146:164)]
+
   
 ## Adding 3 Year Average/Total Variables
   # Writing necessary functions
@@ -1113,8 +1120,8 @@ full_data = read_csv("InitialDataUpdated.csv")
                  is.character, 
                  str_replace_all, pattern = "%", replacement = "")
  
-  full_data[,c(23:34,94:100)] = lapply(full_data[,c(23:34,94:100)], as.numeric)
-  full_data[,c(148,153,158)] = lapply(full_data[,c(148,153,158)], as.numeric)
+  full_data[,c(23:34,95:101)] = lapply(full_data[,c(23:34,95:101)], as.numeric)
+  full_data[,c(147,152,157)] = lapply(full_data[,c(142,152,157)], as.numeric)
   
   # Applying functions as necessary to each column
   fulldatatest = full_data %>%
@@ -1159,8 +1166,9 @@ full_data = read_csv("InitialDataUpdated.csv")
     add_3yraverage(WAA_Bat) %>% 
     add_3yraverage(wRAA) %>% 
     add_3yraverage(RAR_Bat) %>%
-    add_3yraverage(WAR_Bat) %>%
+    add_3yraverage(Br_WAR_Bat) %>%
     add_3yraverage(oWAR) %>%
+    add_3yraverage(WAR_Bat) %>%
     add_3yraverage(RE24_Bat) %>% 
     add_3yraverage(REW_Bat) %>% 
     add_3yraverage(WPA_Bat) %>%
@@ -1217,6 +1225,7 @@ full_data = read_csv("InitialDataUpdated.csv")
     add_3yraverage(FIP) %>%
     add_3yraverage(xFIP) %>%
     add_3yraverage(SIERA) %>%
+    add_3yraverage(WAR_Pitch) %>%
     add_3yraverage(gmLI) %>%
     add_3yraverage(`RAA_Pitch`) %>%
     add_3yraverage(`WAA_Pitch`) %>%
@@ -1224,7 +1233,7 @@ full_data = read_csv("InitialDataUpdated.csv")
     add_3yraverage(`waaWL%`) %>%
     add_3yraverage(`162WL%`) %>%
     add_3yraverage(RAR_Pitch) %>%
-    add_3yraverage(WAR_Pitch) %>%
+    add_3yraverage(Br_WAR_Pitch) %>%
     add_3yraverage(WPA_Pitch) %>%
     add_3yraverage(RE24_Pitch) %>%
     add_3yraverage(REW_Pitch) %>%
@@ -1269,8 +1278,6 @@ full_data = read_csv("InitialDataUpdated.csv")
     add_3yraverage(ROY1stPlace) %>%
     add_3yraverage(ROYShare) %>%
     add_total(ROY_Q)
-  
-  
   
     # Renaming to apply changes
     full_data = fulldatatest
@@ -1343,7 +1350,7 @@ full_data = read_csv("InitialDataUpdated.csv")
     top100_2012$Name[85] = "Howie Kendrick"
     which(top100_2012$Name == "Michael Morse") # changing typo
     top100_2012$Name[95] = "Mike Morse"
-    newrow = c("Adam Wainwright", 2233, 29, "STL", "NL", 2011, rep(0,304)) # adding missed row
+    newrow = c("Adam Wainwright", 2233, 29, "STL", "NL", 2011, rep(0,308)) # adding missed row
     full_data = rbind(full_data, newrow)
   setdiff(top100_2012$Name, full_data$Name[which(full_data$Season == 2011)]) # Confirming correct changes
 
@@ -1353,7 +1360,7 @@ full_data = read_csv("InitialDataUpdated.csv")
     top100_2013$Name[69] = "Melvin Upton Jr."
     which(top100_2013$Name == "Michael Morse") # changing typo
     top100_2013$Name[85] = "Mike Morse"
-    newrow = c("Victor Martinez", 393, 33, "DET", "AL", 2012, rep(0,304)) # adding missed row
+    newrow = c("Victor Martinez", 393, 33, "DET", "AL", 2012, rep(0,308)) # adding missed row
     full_data = rbind(full_data, newrow)
   setdiff(top100_2013$Name, full_data$Name[which(full_data$Season == 2012)]) # Confirming correct changes
 
@@ -1365,7 +1372,7 @@ full_data = read_csv("InitialDataUpdated.csv")
 
   # 2015 List
   setdiff(top100_2015$Name, full_data$Name[which(full_data$Season == 2014)])
-    newrow = c("Matt Harvey", 11713, 25, "NYM", "NL",2014, rep(0,304)) # adding missed row
+    newrow = c("Matt Harvey", 11713, 25, "NYM", "NL",2014, rep(0,308)) # adding missed row
     full_data = rbind(full_data,newrow)
   setdiff(top100_2015$Name, full_data$Name[which(full_data$Season == 2014)]) # Confirming correct changes
     
@@ -1391,7 +1398,7 @@ full_data = read_csv("InitialDataUpdated.csv")
   setdiff(top100_2018$Name, full_data$Name[which(full_data$Season == 2017)]) 
     which(top100_2018$Name == "D.J. LeMahieu") # changing typo
     top100_2018$Name[81] = "DJ LeMahieu"
-    newrow = c("Shohei Ohtani", 19755, 23, "LAA", "AL",2017, rep(0,304)) # adding missed row
+    newrow = c("Shohei Ohtani", 19755, 23, "LAA", "AL",2017, rep(0,308)) # adding missed row
     full_data = rbind(full_data, newrow)
   setdiff(top100_2018$Name, full_data$Name[which(full_data$Season == 2017)])  # Confirming correct changes
 
@@ -1443,9 +1450,10 @@ full_data = read_csv("InitialDataUpdated.csv")
   full_data[which(full_data$Name == "Jose Ramirez" & full_data$Season == 2018),]
   full_data[8749,]$Top100_2019 = NA # changing indicator to 0 from extra row
 
+  full_data = full_data[,c(1,3,2,4:334)]
 ## Removing Non-Top 100 Players OR Players w/ less than 251 avg over three years or Players w/ less than 41 IP avg over three years
   # Make Most Variables Numeric
-  full_data[,c(2:4,7:139,142:330)] <- lapply(full_data[,c(2:4,7:139,142:330)], as.numeric)
+  full_data[,c(2:4,7:141,144:334)] <- lapply(full_data[,c(2:4,7:141,144:334)], as.numeric)
   # Reordering dataset by name and season
   full_data = full_data[order(full_data$Name, full_data$Season),]
   
@@ -1453,11 +1461,11 @@ full_data = read_csv("InitialDataUpdated.csv")
   write.csv(full_data, "FullDataBeforeTrim.csv")
   
   # Reload data if necessary 
-   #  = read_csv("InitialDataBeforeTrim.csv")
-   # full_data = full_data[,-1]
+   full_data = read_csv("FullDataBeforeTrim.csv")
+   full_data = full_data[,-1]
 
   # Replacing NA values with 0
-  full_data = full_data %>% mutate_at(c(7:139,141:330), ~replace(., is.na(.), 0))
+  full_data = full_data %>% mutate_at(c(7:141,144:334), ~replace(., is.na(.), 0))
   
   # At-Bats Check
     # Function to check for average at bats over rolling three years
@@ -1502,7 +1510,7 @@ full_data = read_csv("InitialDataUpdated.csv")
   full_data = test
 
   # Making AB Check and IP Check variables numeric
-  full_data[,331:332]= lapply(full_data[,331:332], as.numeric)
+  full_data[,335:336]= lapply(full_data[,335:336], as.numeric)
   
   # Adding Overall Top 100 Indicator to full data
   full_data = full_data %>% 
@@ -1611,39 +1619,32 @@ full_data = read_csv("InitialDataUpdated.csv")
   
   # Fixing rows with no position
   which(full_data$PosSummary_Field == 0)
-  full_data[179,141] = "P"
-  full_data[2268,141] = "DH"
-  full_data[3241,141] = "OF"
-  full_data[3474,141] = "OF"
-  full_data[3871,141] = "2B"
-  full_data[4103,141] = "DH"
-  full_data[4104,141] = "DH"
-  full_data[4105,141] = "DH"
-  full_data[4888,141] = "DH"
-  full_data[4981,141] = "DH"
-  full_data[5614,141] = "DH"
-  full_data[5765,141] = "P"
-  full_data[6280,141] = "DH"
-  full_data[7390,141] = "P"
-  full_data[7392,141] = "P"
-  full_data[7702,141] = "DH"
-  full_data[7703,141] = "DH"
-  full_data[7704,141] = "DH"
-  full_data[7705,141] = "DH"
-  full_data[7706,141] = "DH"
-  full_data[7921,141] = "DH"
-  full_data[7926,141] = "DH"
-  full_data[7950,141] = "DH"
+  full_data[179,143] = "P"
+  full_data[2268,143] = "DH"
+  full_data[3241,143] = "OF"
+  full_data[3474,143] = "OF"
+  full_data[3871,143] = "2B"
+  full_data[4103,143] = "DH"
+  full_data[4104,143] = "DH"
+  full_data[4105,143] = "DH"
+  full_data[4888,143] = "DH"
+  full_data[4981,143] = "DH"
+  full_data[5614,143] = "DH"
+  full_data[5765,143] = "P"
+  full_data[6280,143] = "DH"
+  full_data[7390,143] = "P"
+  full_data[7392,143] = "P"
+  full_data[7702,143] = "DH"
+  full_data[7703,143] = "DH"
+  full_data[7704,143] = "DH"
+  full_data[7705,143] = "DH"
+  full_data[7706,143] = "DH"
+  full_data[7921,143] = "DH"
+  full_data[7926,143] = "DH"
+  full_data[7950,143] = "DH"
   
   # Making NA's 0 in Top100Rank
-  full_data[, 334][full_data[, 334] == 0] <- NA
-  
-  # Creating dataset where batters and pitchers are separate
-  batters = full_data[which(full_data$PosSummary_Field != "P"),]
-  pitchers = full_data[which(full_data$PosSummary_Field == "P"),]
-  
-  length(which(batters$Top100 == 1))
-  length(which(pitchers$Top100 == 1))
+  full_data[, 338][full_data[, 338] == 0] <- NA
   
   colnames(full_data) = gsub("%","Percent", colnames(full_data))
   colnames(full_data) = gsub("2B", "Doubles", colnames(full_data))
@@ -1652,7 +1653,7 @@ full_data = read_csv("InitialDataUpdated.csv")
   colnames(full_data) = gsub("\\+", "Plus", colnames(full_data))
   colnames(full_data) = gsub("/", "Per", colnames(full_data))
   colnames(full_data) = gsub("162", "FullSeason", colnames(full_data))
-  colnames(full_data) = gsub("\\-", "inLossPercent", colnames(full_data))
+  colnames(full_data) = gsub("\\-", "LPercent", colnames(full_data))
   
   # Resaving full data
   write_csv(full_data,"FullData.csv")
