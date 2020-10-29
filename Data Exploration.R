@@ -120,16 +120,13 @@ team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20"
     ylab("Top 100 List Frequency") + 
     ggtitle("All Players Who Appeared on in the Top 10 of a Top 100 List At Least Three Times") + 
     theme(plot.title = element_text(hjust = 0.5)) 
-
-
   
-  ## Density Plots
-  ggplot(batters, aes(x = `2B_3yravg`, fill = as.factor(Top100))) + 
-    geom_density(alpha = 0.5) + 
-    scale_fill_manual(values = c("#D50032", "#002D72")) + 
-    labs(fill = "Top 100") + 
-    xlab("3 Year Avg. of BA")
+  # Creating dataset where batters and pitchers are separate
+  batters = full_data[which(full_data$PosSummary_Field != "P"),]
+  pitchers = full_data[which(full_data$PosSummary_Field == "P"),]
   
+  ## Density Plots of Variables
+  # Function to plot all non-award variables (3 yr avg editions)
   plot_data_nonawards = function(data, column) {
     ggplot(data, aes_string(x = column, fill = as.factor(data$Top100))) +
       geom_density(alpha = 0.5) + 
@@ -138,10 +135,11 @@ team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20"
       xlab(paste("3 Year Avg. of", sub("_.*", "", column)))
   }
 
-  battingplots_nonawards = lapply(colnames(full_data)[c(160:217)], plot_data_nonawards, data = batters)
-  pitchingplots_nonawards = lapply(colnames(full_data)[218:274], plot_data_nonawards, data = pitchers)
+  # Creating list of plots by batters and pitchers separately
+  battingplots_nonawards = lapply(colnames(full_data)[c(162:220)], plot_data_nonawards, data = batters)
+  pitchingplots_nonawards = lapply(colnames(full_data)[221:278], plot_data_nonawards, data = pitchers)
 
-    
+  # Function to plot award variables 
   plot_data_awards = function(data, column) {
     ggplot(data, aes_string(x = column, fill = as.factor(data$Top100))) +
       geom_density(alpha = 0.5) + 
@@ -150,18 +148,16 @@ team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20"
       xlab(paste("Total", sub("_.*", "", column)))
   }
   
-  battingplots_awards = lapply(colnames(full_data)[c(293:295,300,310)], plot_data_awards, data = batters)
-  pitchingplots_awards = lapply(colnames(full_data)[c(293:295,300,305,310)], plot_data_awards, data = pitchers)
+  # Creating list of award plots for batters and pitchers separately
+  battingplots_awards = lapply(colnames(full_data)[c(297:299,300,310)], plot_data_awards, data = batters)
+  pitchingplots_awards = lapply(colnames(full_data)[c(297:299,300,305,310)], plot_data_awards, data = pitchers)
  
-  
+  # Merging award and non-award plots together
   battingplots = append(battingplots_nonawards, battingplots_awards)
   pitchingplots = append(pitchingplots_nonawards, pitchingplots_awards)
-
-  battingplots[20]
   
-  
+  # Creating PDF files of plots
   library(gridExtra)
-  
   pdf("battingplots.pdf")
   for (i in seq(length(list(battingplots)))) {
     print(list(battingplots)[[i]])
@@ -174,8 +170,105 @@ team_colors = c("#A71930", "#CE1141", "#DF4601", "#C62033", "#0E3386", "#231F20"
   }
   dev.off()
   
+## Changing WinLossPercentLPercent Column Name due to Error in Code
+colnames(full_data)[68] = "WLPercent"
 
-  prcomp() 
-  
+## Removing Similar/Unnecessary Variables from full data
+dropcolumns = c("BBPercent", "KPercent", "wRC", "SOPerW", "Rtot", "HR_Pitch",
+                "BB_Pitch", "SO_Pitch", "RS", "WLPercent", "RFPerG", "RAA_Bat",
+                "RAR_Bat", "RAA_Pitch", "RAR_Pitch", "BtRuns", "RE24_Bat", "RE24_Pitch",
+                "wRAA","BBPercent_3yravg", "KPercent_3yravg", "wRC_3yravg", "SOPerW_3yravg",
+                "Rtot_3yravg", "HR_Pitch_3yravg","BB_Pitch_3yravg", "SO_Pitch_3yravg",
+                "RS_3yravg", "WinLossPercentLPercent_3yravg", "RFPerG_3yravg", "RAA_Bat_3yravg",
+                "RAR_Bat_3yravg", "RAA_Pitch_3yravg", "RAR_Pitch_3yravg", "BtRuns_3yravg",
+                "RE24_Bat_3yravg", "RE24_Pitch_3yravg", "wRAA_3yravg")
 
+
+full_data = full_data[,!(names(full_data) %in% dropcolumns)]
+
+
+## Renaming Columns & Adusting Values for Clarity
+  # Batting to Batting_Wins_FG, altering runs to wins
+  which(colnames(full_data) == "Batting")
+  full_data$Batting = full_data$Batting/10
+  which(colnames(full_data) == "Batting_3yravg")
+  full_data$Batting_3yravg = full_data$Batting_3yravg/10
+  colnames(full_data)[50] = "BattingWins_FG"
+  colnames(full_data)[186] = "BattingWins_FG_3yravg"
+
+  # BtWins to Batting_Wins_BR
+  which(colnames(full_data) == "BtWins")
+  colnames(full_data)[39] = "BattingWins_BR"
+  which(colnames(full_data) == "BtWins_3yravg")
+  colnames(full_data)[175] = "BattingWins_BR_3yravg"
+
+  # Br_WAR_Bat to WAR_Pos_BR
+  which(colnames(full_data) == "Br_WAR_Bat")
+  colnames(full_data)[41] = "WAR_Pos_BR"
+  which(colnames(full_data) == "Br_WAR_Bat_3yravg")
+  colnames(full_data)[177] = "WAR_Pos_BR_3yravg"
+
+  # WAR_Bat to WAR_Pos_FG
+  which(colnames(full_data) == "WAR_Bat")
+  colnames(full_data)[43] = "WAR_Pos_FG"
+  which(colnames(full_data) == "WAR_Bat_3yravg")
+  colnames(full_data)[179] = "WAR_Pos_FG_3yravg"
+
+  # oWAR to oWAR_BR
+  which(colnames(full_data) == "oWAR")
+  colnames(full_data)[42] = "oWAR_BR"
+  which(colnames(full_data) == "oWAR_3yravg")
+  colnames(full_data)[178] = "oWAR_BR_3yravg"
+
+  # Off to oWAR_FG, altering runs to wins
+  which(colnames(full_data) == "Off")
+  full_data$Off = full_data$Off/10
+  which(colnames(full_data) == "Off_3yravg")
+  full_data$Off_3yravg = full_data$Off_3yravg/10
+  colnames(full_data)[51] = "oWAR_FG"
+  colnames(full_data)[187] = "oWAR_FG_3yravg"
   
+  #Br_WAR_Pitch to WAR_Pitch_BR
+  which(colnames(full_data) == "Br_WAR_Pitch")
+  colnames(full_data)[99] = "WAR_Pitch_BR"
+  which(colnames(full_data) == "Br_WAR_Pitch_3yravg")
+  colnames(full_data)[236] = "WAR_Pitch_BR_3yravg"
+  
+  # WAR_Pitch to WAR_Pitch_FG
+  which(colnames(full_data) == "WAR_Pitch")
+  colnames(full_data)[93] = "WAR_Pitch_FG"
+  which(colnames(full_data) == "WAR_Pitch_3yravg")
+  colnames(full_data)[230] = "WAR_Pitch_FG_3yravg"
+  
+  # Rdrs to DRS_BR
+  which(colnames(full_data) == "Rdrs")
+  colnames(full_data)[118] = "DRS_BR"
+  which(colnames(full_data) == "Rdrs_3yravg")
+  colnames(full_data)[255] = "DRS_BR_3yravg"
+
+  # Fielding to DRS_FG
+  which(colnames(full_data) == "Fielding")
+  colnames(full_data)[121] = "DRS_FG"
+  which(colnames(full_data) == "Fielding_3yravg")
+  colnames(full_data)[258] = "DRS_FG_3yravg"
+
+  # dWAR to dWAR_BR
+  which(colnames(full_data) == "dWAR")
+  colnames(full_data)[120] = "dWAR_BR"
+  which(colnames(full_data) == "dWAR_3yravg")
+  colnames(full_data)[257] = "dWAR_BR_3yravg"
+
+  # Def to dWAR_FG
+  which(colnames(full_data) == "Def")
+  full_data$Def = full_data$Def/10
+  which(colnames(full_data) == "Def_3yravg")
+  full_data$Def_3yravg = full_data$Def_3yravg/10
+  colnames(full_data)[122] = "dWAR_FG"
+  colnames(full_data)[259] = "dWAR_FG_3yravg"
+
+## Creating dataset where batters and pitchers are separate
+batters = full_data[which(full_data$PosSummary_Field != "P"),]
+pitchers = full_data[which(full_data$PosSummary_Field == "P"),]
+
+## Saving Work Environment
+save.image()
