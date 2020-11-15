@@ -270,5 +270,7 @@ full_data = full_data[,!(names(full_data) %in% dropcolumns)]
 batters = full_data[which(full_data$PosSummary_Field != "P"),]
 pitchers = full_data[which(full_data$PosSummary_Field == "P"),]
 
+## Saving Data
+write_csv(full_data, "DataForAnalysis.csv")
 ## Saving Work Environment
 save.image()
