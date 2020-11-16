@@ -1233,11 +1233,16 @@ vc_comparison_table$Type = rep(c("Traditional Bat","Advanced Bat", "Both Bat", "
 
 vc_comparison_table$Method <- factor(vc_comparison_table$Method, levels = c("Batters Traditional PCA", "Batters Traditional PLR", "Batters Advanced PCA", "Batters Advanced PLR", "Batters Trad/Adv then PCA", "Batters Trad/Adv then PLR", "Pitchers Traditional PCA", "Pitchers Traditional PLR", "Pitchers Advanced PCA", "Pitchers Advanced PLR", "Pitchers Trad/Adv then PCA", "Pitchers Trad/Adv then PLR"))
 
+vc_comparison_table$Sensitivity = as.numeric(vc_comparison_table$Sensitivity)
+
+library(scales)
 ggplot(vc_comparison_table, aes(x = Method, y = Sensitivity, fill = Type)) +
   geom_bar(stat = "identity", position = position_dodge()) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   ggtitle("Comparison of Sensivity Across PCA and PLR Methods") + 
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  scale_y_continuous(limits = c(0.5, 0.75),breaks = seq(0.5, 0.75, 0.05), oob=rescale_none) +
+  scale_fill_brewer(palette = "Blues", direction = -1)
 ```
 
 
