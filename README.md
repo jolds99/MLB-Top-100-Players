@@ -5,7 +5,7 @@
 
 This repository contains the csv data files relevant to the project, the R and Rmd scripts used in the data organization, exploration and analysis process, and the pdf version of the final paper (Final Report.pdf) and slides (Presentation Slides.pdf) used in my presentation of the thesis project on December 10, 2020. 
 
-## R/Rmd Scripts Descriptions ##
+## Descriptions of the R/Rmd Scripts ##
 1. DataScraping.R: Includes several functions created to scrape and clean data from Baseball Reference, as well as the code necessary to organize and merge data into one large dataset
 2. DataExploration.R: Includes the plots used to facilitate better understanding of the data and explore initial relationships. This script also includes some code that drops unnecessary/duplicate variables from the dataset, based on the examination of the plots and the data. 
-3. Logistic Regression & Results.R: Includes all code relevant to conducting principal components analysis and LASSO penalization within the context of logistic regression models, as well as the tabular and graphical results from the models. 
+3. Logistic Regression & Results.Rmd: Includes all code relevant to conducting principal components analysis and LASSO penalization within the context of logistic regression models, as well as the tabular and graphical results from the models. 
